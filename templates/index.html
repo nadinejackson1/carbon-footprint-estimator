@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Footprint Estimator</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Carbon Footprint Estimator</h1>
+        <form id="carbon-form">
+            <label for="activity">Activity:</label>
+            <select name="activity" id="activity">
+                <option value="Driving">Driving</option>
+                <option value="Flying">Flying</option>
+                <option value="Biking">Biking</option>
+                <option value="Walking">Walking</option>
+            </select>
+            <label for="distance">Distance (km):</label>
+            <input type="number" name="distance" id="distance" required>
+            <label for="people">People:</label>
+            <input type="number" name="people" id="people" value="1" required>
+            <button type="submit">Calculate</button>
+        </form>
+        <p id="result"></p>
+
+        <script>
+            $("#carbon-form").on("submit", function(event) {
+                event.preventDefault();
+                const formData = $(this).serialize();
+                
+                $.post("/calculate", formData, function(response) {
+                    $("#result").text(`Carbon Footprint: ${response.carbon_footprint.toFixed(2)} kg CO2`);
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>
